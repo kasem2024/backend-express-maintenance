@@ -34,7 +34,7 @@ app.use('/api/gate', gateRoutes);
 app.use('/api/user', userRoutes);
 
 // Sync models
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ alter: false }).then(() => {
   console.log('Database synced.');
 }).catch((err) => {
   console.error('Error syncing database:', err);

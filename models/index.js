@@ -47,6 +47,7 @@ const Device = sequelize.define('Device', {
 // Maintenance Operation Model
 const MaintenanceOperation = sequelize.define('MaintenanceOperation', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  deviceId:{type:DataTypes.INTEGER ,allowNull:false},
   technicalReceiver: { type: DataTypes.STRING, allowNull: false },
   problemDescription: { type: DataTypes.TEXT, allowNull: false },
   ownerName: { type: DataTypes.STRING, allowNull: false },
@@ -66,7 +67,7 @@ const MaintenanceOperation = sequelize.define('MaintenanceOperation', {
 
 // Associations
 // A User can maintain many operations, and approve many operations
-User.hasMany(MaintenanceOperation, { as: 'MaintainedOperations', foreignKey: 'maintainedBy' });
+User.hasMany(MaintenanceOperation, { as: 'maintainedoperation', foreignKey: 'maintainedBy' });
 MaintenanceOperation.belongsTo(User, { as: 'maintainer', foreignKey: 'maintainedBy' });
 
 User.hasMany(MaintenanceOperation, { as: 'ApprovedOperations', foreignKey: 'approvedBy' });
@@ -85,8 +86,8 @@ Device.belongsTo(WorkStation, { foreignKey: 'workstationId', as: 'workstation' }
 Gate.hasMany(Device, { foreignKey: 'gateId' });
 Device.belongsTo(Gate, { foreignKey: 'gateId', as: 'gate' });
 
-Device.hasMany(MaintenanceOperation, { foreignKey: 'deviceId', onDelete: 'CASCADE'  , as:'maintenanceoperation'});
-MaintenanceOperation.belongsTo(Device, { foreignKey: 'deviceId', onDelete: 'CASCADE'  ,as:"maintain"});
+Device.hasMany(MaintenanceOperation, { foreignKey: 'deviceId', onDelete: 'CASCADE' , as:"maintenanceoperation" });
+MaintenanceOperation.belongsTo(Device, { foreignKey: 'deviceId', onDelete: 'CASCADE',as:"device"});
 
 module.exports = {
   sequelize,

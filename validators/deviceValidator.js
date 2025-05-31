@@ -8,8 +8,8 @@ exports.deviceValidationRules = [
   body('specs.mac').notEmpty().withMessage('MAC address is required'),
   body('specs.ram').notEmpty().withMessage('RAM info is required'),
   body('specs.deviceType').notEmpty().withMessage('Device type is required'),
-  body('sectorId').optional().isInt().withMessage('sectorId must be an integer'),
-  body('administrationId').optional().isInt(),
-  body('workstationId').optional().isInt(),
-  body('gateId').optional().isInt(),
+  body('sectorId').notEmpty().isInt().withMessage('sectorId must be an integer'),
+  body('administrationId').notEmpty().isInt().withMessage("administrationId is required"),
+  body('workstationId').notEmpty().isInt().withMessage("worstationId is required"),
+  body('gateId').notEmpty().isInt().withMessage("gateId is required"),
 ];

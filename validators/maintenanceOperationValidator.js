@@ -1,6 +1,7 @@
 const { body } = require('express-validator');
 
 exports.maintenanceValidationRules = [
+  body('deviceId').notEmpty().isInt().withMessage("deviceId is required"),
   body('technicalReceiver').notEmpty().withMessage('Technical receiver is required'),
   body('problemDescription').notEmpty().withMessage('Problem description is required'),
   body('ownerName').notEmpty().withMessage('Owner name is required'),
@@ -15,5 +16,5 @@ exports.maintenanceValidationRules = [
   body('isDelivered').optional().isBoolean(),
   body('maintainedBy').optional().isInt(),
   body('approvedBy').optional().isInt(),
-  body('deviceId').optional().isInt()
+
 ];

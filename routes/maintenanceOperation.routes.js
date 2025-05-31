@@ -3,7 +3,7 @@ const router = express.Router();
 const controller = require('../controllers/maintenance.controller');
 const { maintenanceValidationRules } = require('../validators/maintenanceOperationValidator');
 const validate = require('../middlewares/validate');
-const { authenticate, isAdmin } = require('../middlewares/auth');
+const { authenticate } = require('../middlewares/auth');
 
 router.get('/',authenticate,  controller.getMaintenanceOperations);
 router.post('/', authenticate, maintenanceValidationRules ,validate, controller.createMaintenanceOperation);

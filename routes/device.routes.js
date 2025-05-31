@@ -9,7 +9,7 @@ const { authenticate } = require('../middlewares/auth');
 
 router.get('/', authenticate, controller.getDevices);
 router.post('/',authenticate, deviceValidationRules, validate, controller.createDevice);
-router.put('/:id',authenticate, deviceValidationRules, validate , controller.updateDevice);
+router.put('/:id',authenticate,  deviceValidationRules, validate , controller.updateDevice);
 router.delete('/:id',authenticate, controller.deleteDevice);
 router.get('/fetch-device-info/:ip',authenticate, controller.getDeviceInfo)
 

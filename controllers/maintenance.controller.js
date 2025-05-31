@@ -1,5 +1,5 @@
 const { MaintenanceOperation, Device, User } = require('../models');
-
+// for create or getting should be at least one device stored in the db
 // Create MaintenanceOperation
 exports.createMaintenanceOperation = async (req, res) => {
   try {
@@ -47,7 +47,7 @@ exports.updateMaintenanceOperation = async (req, res) => {
 exports.deleteMaintenanceOperation = async (req, res) => {
   try {
     await MaintenanceOperation.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'MaintenanceOperation deleted' });
+    res.json({ message: 'تم حذف عملية الصيانة بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

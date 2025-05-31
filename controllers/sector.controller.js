@@ -1,4 +1,4 @@
-const { Sector } = require('../models');
+const { Sector ,Device ,MaintenanceOperation} = require('../models');
 
 // Create Sector
 exports.createSector = async (req, res) => {
@@ -17,7 +17,20 @@ exports.getSectors = async (req, res) => {
     // const sectors = await Sector.findAll({ include: [{ model: Device, as: 'devices' }] });
     
     // For now, just getting all sectors without maintenance or devices:
-    const sectors = await Sector.findAll();
+    const sectors = await Sector.findAll({
+      include: [
+        {
+          model: Device,
+          as: 'Devices',
+          include: [
+            {
+              model: MaintenanceOperation,
+              as: 'maintenanceoperation'
+            }
+          ]
+        }
+      ]
+    });
     res.json(sectors);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -39,7 +52,7 @@ exports.updateSector = async (req, res) => {
 exports.deleteSector = async (req, res) => {
   try {
     await Sector.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Sector deleted' });
+    res.json({ message: 'تم حذف القطاع بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

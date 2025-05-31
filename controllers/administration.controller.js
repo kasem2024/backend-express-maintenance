@@ -15,18 +15,18 @@ exports.getAdministrations = async (req, res) => {
   try {
      //=> add a validations for the device and miantenance before findAll 
     const administrations = await Administration.findAll({
-      // include: [
-      //   {
-      //     model: Device,
-      //     as: 'Devices',
-      //     include: [
-      //       {
-      //         model: MaintenanceOperation,
-      //         as: 'MaintenanceOperations'
-      //       }
-      //     ]
-      //   }
-      // ]
+      include: [
+        {
+          model: Device,
+          as: 'Devices',
+          include: [
+            {
+              model: MaintenanceOperation,
+              as: 'maintenanceoperation'
+            }
+          ]
+        }
+      ]
     });
     console.log(administrations)
     res.json(administrations);
@@ -52,7 +52,7 @@ exports.updateAdministration = async (req, res) => {
 exports.deleteAdministration = async (req, res) => {
   try {
     await Administration.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Administration deleted successfully' });
+    res.json({ message: 'تم حذف الأدارة بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

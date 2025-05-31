@@ -1,10 +1,10 @@
-const { Workstation, Device, MaintenanceOperation } = require('../models');
+const { WorkStation, Device, MaintenanceOperation } = require('../models');
 
 // Create Workstation
 exports.createWorkstation = async (req, res) => {
   try {
-    const workstation = await Workstation.create(req.body);
-    res.status(201).json(workstation);
+    const Workstation = await WorkStation.create(req.body);
+    res.status(201).json(Workstation);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -13,13 +13,14 @@ exports.createWorkstation = async (req, res) => {
 // Get all Workstations with their Devices and Devices' MaintenanceOperations
 exports.getWorkstations = async (req, res) => {
   try {
-    const workstations = await Workstation.findAll({
+
+    const workstations = await WorkStation.findAll({
       include: {
         model: Device,
         as: 'Devices',
         include: {
           model: MaintenanceOperation,
-          as: 'MaintenanceOperations'
+          as: 'maintenanceoperation'
         }
       }
     });
@@ -32,8 +33,8 @@ exports.getWorkstations = async (req, res) => {
 // Update Workstation
 exports.updateWorkstation = async (req, res) => {
   try {
-    await Workstation.update(req.body, { where: { id: req.params.id } });
-    const updatedWorkstation = await Workstation.findByPk(req.params.id);
+    await WorkStation.update(req.body, { where: { id: req.params.id } });
+    const updatedWorkstation = await WorkStation.findByPk(req.params.id);
     res.json(updatedWorkstation);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,8 +44,8 @@ exports.updateWorkstation = async (req, res) => {
 // Delete Workstation
 exports.deleteWorkstation = async (req, res) => {
   try {
-    await Workstation.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Workstation deleted' });
+    await WorkStation.destroy({ where: { id: req.params.id } });
+    res.json({ message: 'تم حذف المكتب بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

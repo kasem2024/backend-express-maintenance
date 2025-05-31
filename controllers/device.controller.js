@@ -4,6 +4,19 @@ const axios = require('axios');
 //  Create device
 exports.createDevice = async (req, res) => {
   try {
+    const [sectorCount, adminCount, workstationCount, gateCount] = await Promise.all([
+      Sector.count(),
+      Administration.count(),
+      WorkStation.count(),
+      Gate.count()
+    ]);
+
+    if (sectorCount < 1 || adminCount < 1 || workstationCount < 1 || gateCount < 1) {
+      return res.status(400).json({
+        error: 'غير قادر علي انشاء جهاز لابد من وجود ادراة و بوابة وقطاع و مكتب  واحد علي الاقل '
+      });
+    }
+
     const device = await Device.create(req.body);
     res.status(201).json(device);
   } catch (error) {
@@ -14,24 +27,39 @@ exports.createDevice = async (req, res) => {
 //  Get all devices with full associations
 exports.getDevices = async (req, res) => {
   try {
-    
+    const [sectorCount, adminCount, workstationCount, gateCount] = await Promise.all([
+      Sector.count(),
+      Administration.count(),
+      WorkStation.count(),
+      Gate.count()
+    ]);
+
+    if (sectorCount < 1 || adminCount < 1 || workstationCount < 1 || gateCount < 1) {
+      return res.status(400).json({
+        error: 'غير قادر علي استرجاع بيانات الاجهاز لابد من وجود ادراة و بوابة و قطاع و مكتب واحد علي الاقل'
+      });
+    }
+
     const devices = await Device.findAll({
       include: [
-        { model: Sector, as: 'sector' ,required:false},
-        { model: Administration, as: 'administration',required:false },
-        { model: WorkStation, as: 'workstation',required:false },
-        { model: Gate, as: 'gate' , required:false },
+        { model: Sector, as: 'sector', required: false },
+        { model: Administration, as: 'administration', required: false },
+        { model: WorkStation, as: 'workstation', required: false },
+        { model: Gate, as: 'gate', required: false },
         {
           model: MaintenanceOperation,
-          as: 'maintenanceoperation',required:false
+          as: 'maintenanceoperation',
+          required: false
         }
       ]
     });
+
     res.json(devices);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 //  Update device
 exports.updateDevice = async (req, res) => {
@@ -48,7 +76,7 @@ exports.updateDevice = async (req, res) => {
 exports.deleteDevice = async (req, res) => {
   try {
     await Device.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Device deleted successfully' });
+    res.json({ message: 'الجهاز تم خذفه بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

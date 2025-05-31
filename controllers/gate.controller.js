@@ -21,7 +21,7 @@ exports.getGates = async (req, res) => {
           include: [
             {
               model: MaintenanceOperation,
-              as: 'MaintenanceOperations'
+              as: 'maintenanceoperation'
             }
           ]
         }
@@ -48,7 +48,7 @@ exports.updateGate = async (req, res) => {
 exports.deleteGate = async (req, res) => {
   try {
     await Gate.destroy({ where: { id: req.params.id } });
-    res.json({ message: 'Gate deleted successfully' });
+    res.json({ message: 'تم حذف البوابة بنجاح' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
